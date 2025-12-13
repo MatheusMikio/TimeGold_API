@@ -10,11 +10,11 @@ type Scheduling struct {
 	gorm.Model
 	Date           time.Time    `json:"date"`
 	ServiceID      uint         `json:"serviceId"`
-	Service        Service      `json:"service" gorm:"foreignKey:ServiceID"`
+	Service        Service      `json:"-" gorm:"foreignKey:ServiceID"`
 	ProfessionalID uint         `json:"professionalId"`
-	Professional   Professional `json:"professional" gorm:"foreignKey:ProfessionalID"`
+	Professional   Professional `json:"-" gorm:"foreignKey:ProfessionalID"`
 	CompanyID      uint         `json:"companyId"`
-	Company        Company      `json:"company" gorm:"foreignKey:CompanyID"`
+	Company        Company      `json:"-" gorm:"foreignKey:CompanyID"`
 	ClientID       uint         `json:"clientId"`
-	Client         Client       `json:"client" gorm:"foreignKey:ClientID"`
+	Client         Client       `json:"-" gorm:"foreignKey:ClientID"`
 }
