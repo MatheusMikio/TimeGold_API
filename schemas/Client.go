@@ -1,8 +1,8 @@
 package schemas
 
 import (
-	base "github.com/MatheusMikio/Base"
 	"github.com/MatheusMikio/models"
+	"github.com/MatheusMikio/models/base"
 )
 
 type Client struct {

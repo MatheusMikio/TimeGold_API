@@ -17,12 +17,12 @@ type Company struct {
 	AppointmentFeePct  float64            `json:"appointmentFeePct"`
 	LogoURL            string             `json:"logoUrl"`
 	BannerURL          string             `json:"bannerUrl"`
-	Professionals      []Professional     `json:"professionals"`
+	Professionals      []Professional     `json:"professionals" gorm:"foreignKey:CompanyID"`
 	Adress             models.Adress      `json:"adress" gorm:"embedded"`
 	LegallyResponsible LegallyResponsible `json:"legallyResponsible" gorm:"embedded"`
 	Pix                models.Pix         `json:"pix" gorm:"embedded"`
 	WorkingHours       WorkingHours       `json:"workingHours" gorm:"type:json"`
-	Services           []Service          `json:"services"`
+	Services           []Service          `json:"services" gorm:"foreignKey:CompanyID"`
 	CardDataID         uint               `json:"cardDataId"`
 	CardData           models.CardData    `json:"-" gorm:"foreignKey:CardDataID"`
 	StripeIDs          StripeIDs          `json:"stripeIds" gorm:"embedded"`
