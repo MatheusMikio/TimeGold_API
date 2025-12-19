@@ -2,6 +2,6 @@ package client
 
 import "github.com/gin-gonic/gin"
 
-func CreateHandler(ctx *gin.Context) {
+func CreateClientHandler(ctz *gin.Context) {
 	return
 }

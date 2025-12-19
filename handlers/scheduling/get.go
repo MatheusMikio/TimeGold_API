@@ -1,5 +1,7 @@
 package scheduling
 
-func GetHandler(ctx *gin.Context){
-	return nil
+import "github.com/gin-gonic/gin"
+
+func GetHandler(ctx *gin.Context) {
+	return
 }

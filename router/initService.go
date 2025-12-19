@@ -1,12 +1,17 @@
 package router
 
-func initService(rg *gin.RouterGroup){
+import (
+	sh "github.com/MatheusMikio/handlers/service"
+	"github.com/gin-gonic/gin"
+)
+
+func initService(rg *gin.RouterGroup) {
 	service := rg.Group("/services")
 	{
-		service.GET("", service.GetAllHandler)
-		service.GET("", service.GetHandler)
-		service.POST("", service.CreateHandler)
-		service.PUT("", service.UpdateHandler)
-		service.DELETE("", service.DeleteHandler)
+		service.GET("", sh.GetAllHandler)
+		service.GET("", sh.GetHandler)
+		service.POST("", sh.CreateHandler)
+		service.PUT("", sh.UpdateHandler)
+		service.DELETE("", sh.DeleteHandler)
 	}
 }

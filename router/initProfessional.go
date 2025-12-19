@@ -1,12 +1,17 @@
 package router
 
-func initProfessional(rg *gin.RouterGroup){
+import (
+	ph "github.com/MatheusMikio/handlers/professional"
+	"github.com/gin-gonic/gin"
+)
+
+func initProfessional(rg *gin.RouterGroup) {
 	professional := rg.Group("/professionals")
 	{
-		professional.GET("", professional.GetAllHandler)
-		professional.GET("", professional.GetHandler)
-		professional.POST("", professional.CreateHandler)
-		professional.PUT("", professional.UpdateHandler)
-		professional.DELETE("", professional.DeleteHandler)
+		professional.GET("", ph.GetAllHandler)
+		professional.GET("", ph.GetHandler)
+		professional.POST("", ph.CreateHandler)
+		professional.PUT("", ph.UpdateHandler)
+		professional.DELETE("", ph.DeleteHandler)
 	}
 }

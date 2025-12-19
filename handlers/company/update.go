@@ -1,5 +1,7 @@
 package company
 
-func UpdateHandler(ctx *gin.Context){
-	return nil
+import "github.com/gin-gonic/gin"
+
+func UpdateHandler(ctx *gin.Context) {
+	return
 }

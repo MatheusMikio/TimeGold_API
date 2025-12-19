@@ -1,5 +1,7 @@
 package company
 
-func DeleteHandler(ctx *gin.Context){
-	return nil
+import "github.com/gin-gonic/gin"
+
+func DeleteHandler(ctx *gin.Context) {
+	return
 }

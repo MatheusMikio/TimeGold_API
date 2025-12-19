@@ -1,12 +1,17 @@
 package router
 
-func initClient(rg *gin.RouterGroup){
+import (
+	ch "github.com/MatheusMikio/handlers/client"
+	"github.com/gin-gonic/gin"
+)
+
+func initClient(rg *gin.RouterGroup) {
 	client := rg.Group("/clients")
 	{
-		client.GET("", client.GetAllHandler)
-		client.GET("", client.GetHandler)
-		client.POST("", client.CreateHandler)
-		client.PUT("", client.UpdateHandler)
-		client.DELETE("", client.DeleteHandler)
+		client.GET("", ch.GetAllHandler)
+		client.GET("", ch.GetHandler)
+		client.POST("", ch.CreateHandler)
+		client.PUT("", ch.UpdateHandler)
+		client.DELETE("", ch.DeleteHandler)
 	}
 }

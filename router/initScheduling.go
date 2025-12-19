@@ -1,12 +1,17 @@
 package router
 
-func initScheduling(rg *gin.RouterGroup){
+import (
+	sh "github.com/MatheusMikio/handlers/scheduling"
+	"github.com/gin-gonic/gin"
+)
+
+func initScheduling(rg *gin.RouterGroup) {
 	scheduling := rg.Group("/schedulings")
 	{
-		scheduling.GET("", scheduling.GetAllHandler)
-		scheduling.GET("", scheduling.GetHandler)
-		scheduling.POST("", scheduling.CreateHandler)
-		scheduling.PUT("", scheduling.UpdateHandler)
-		scheduling.DELETE("", scheduling.DeleteHandler)
+		scheduling.GET("", sh.GetAllHandler)
+		scheduling.GET("", sh.GetHandler)
+		scheduling.POST("", sh.CreateHandler)
+		scheduling.PUT("", sh.UpdateHandler)
+		scheduling.DELETE("", sh.DeleteHandler)
 	}
 }

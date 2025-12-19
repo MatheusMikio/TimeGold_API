@@ -1,5 +1,7 @@
 package professional
 
-func CreateHandler(ctx *gin.Context){
-	return nil
+import "github.com/gin-gonic/gin"
+
+func CreateHandler(ctx *gin.Context) {
+	return
 }
