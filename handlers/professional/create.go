@@ -1,5 +1,5 @@
-package client
+package professional
 
-func CreateHandler(ctz *gin.Context){
+func CreateHandler(ctx *gin.Context){
 	return nil
 }
