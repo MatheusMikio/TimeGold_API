@@ -17,4 +17,6 @@ func initRoutes(router *gin.Engine) {
 		initService(v1)
 		initScheduling(v1)
 	}
+
+	// router.GET("/swagger/*any", ginSwagger.WrapHandler(files.handler))
 }
