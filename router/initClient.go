@@ -9,9 +9,9 @@ func initClient(rg *gin.RouterGroup) {
 	client := rg.Group("/clients")
 	{
 		client.GET("", ch.GetAllHandler)
-		client.GET("", ch.GetHandler)
+		client.GET("/:id", ch.GetHandler)
 		client.POST("", ch.CreateHandler)
-		client.PUT("", ch.UpdateHandler)
-		client.DELETE("", ch.DeleteHandler)
+		client.PUT("/:id", ch.UpdateHandler)
+		client.DELETE("/:id", ch.DeleteHandler)
 	}
 }

@@ -9,9 +9,9 @@ func initProfessional(rg *gin.RouterGroup) {
 	professional := rg.Group("/professionals")
 	{
 		professional.GET("", ph.GetAllHandler)
-		professional.GET("", ph.GetHandler)
+		professional.GET("/:id", ph.GetHandler)
 		professional.POST("", ph.CreateHandler)
-		professional.PUT("", ph.UpdateHandler)
-		professional.DELETE("", ph.DeleteHandler)
+		professional.PUT("/:id", ph.UpdateHandler)
+		professional.DELETE("/:id", ph.DeleteHandler)
 	}
 }

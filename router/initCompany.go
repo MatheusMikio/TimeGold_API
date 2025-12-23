@@ -9,9 +9,9 @@ func initCompany(rg *gin.RouterGroup) {
 	company := rg.Group("/companies")
 	{
 		company.GET("", ch.GetAllHandler)
-		company.GET("", ch.GetHandler)
+		company.GET("/:id", ch.GetHandler)
 		company.POST("", ch.CreateHandler)
-		company.PUT("", ch.UpdateHandler)
-		company.DELETE("", ch.DeleteHandler)
+		company.PUT("/:id", ch.UpdateHandler)
+		company.DELETE("/:id", ch.DeleteHandler)
 	}
 }
