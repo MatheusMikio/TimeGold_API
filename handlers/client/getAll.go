@@ -3,6 +3,7 @@ package client
 import (
 	"net/http"
 
+	"github.com/MatheusMikio/dto/client"
 	"github.com/MatheusMikio/handlers"
 	"github.com/MatheusMikio/schemas"
 	"github.com/gin-gonic/gin"
@@ -10,9 +11,34 @@ import (
 
 func GetAllHandler(ctx *gin.Context) {
 	clients := []schemas.Client{}
-	if err := handlers.Db.Find(&clients).Error; err != nil {
+
+	if err := handlers.Db.Preload("Appointments").Find(&clients).Error; err != nil {
 		handlers.SendError(ctx, http.StatusInternalServerError, "error listing clients")
 		return
 	}
-	handlers.SendSuccess(ctx, http.StatusOK, "GET Clients", &clients)
+
+	clientsResponse := []client.ClientResponse{}
+
+	for _, cli := range clients {
+		appointmentsSummary := []client.AppointmentSummary{}
+
+		for _, scheduling := range cli.Appointments {
+			appointmentsSummary = append(appointmentsSummary, client.AppointmentSummary{
+				ID:   scheduling.ID,
+				Date: scheduling.Date,
+			})
+		}
+
+		clientResponse := client.ClientResponse{
+			ID:                  cli.BaseUser.ID,
+			FirstName:           cli.FirstName,
+			LastName:            cli.LastName,
+			Cpf:                 cli.Cpf,
+			Email:               cli.Email,
+			Phone:               cli.Phone,
+			AppointmentsSummary: appointmentsSummary,
+		}
+		clientsResponse = append(clientsResponse, clientResponse)
+	}
+	handlers.SendSuccess(ctx, http.StatusOK, "GET Clients", &clientsResponse)
 }
