@@ -48,5 +48,7 @@ func (r *ClientRequest) Validate(db *gorm.DB) []*models.ErrorMessage {
 
 	errorMessages = append(errorMessages, utils.ValidateCpf[schemas.Client](r.Cpf, db)...)
 
+	errorMessages = append(errorMessages, utils.ValidatePhone[schemas.Client](r.Phone, db)...)
+
 	return errorMessages
 }

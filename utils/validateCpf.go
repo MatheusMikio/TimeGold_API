@@ -13,6 +13,7 @@ func ValidateCpf[T any](cpf string, db *gorm.DB) []*models.ErrorMessage {
 
 	if cpf == "" {
 		errorMessages = append(errorMessages, models.CreateErrorMessage("Cpf", "CPF cannot be empty"))
+		return errorMessages
 	}
 
 	if err := svc.IsValid(cpf); err != nil {

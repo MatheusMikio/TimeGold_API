@@ -6,6 +6,7 @@ require (
 	github.com/badoux/checkmail v1.2.4
 	github.com/gin-gonic/gin v1.11.0
 	github.com/jfelipearaujo/cpfcnpj v1.2.0
+	github.com/nyaruka/phonenumbers v1.6.7
 	github.com/shopspring/decimal v1.4.0
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.31.1
@@ -42,6 +43,7 @@ require (
 	go.uber.org/mock v0.5.0 // indirect
 	golang.org/x/arch v0.20.0 // indirect
 	golang.org/x/crypto v0.40.0 // indirect
+	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394 // indirect
 	golang.org/x/mod v0.25.0 // indirect
 	golang.org/x/net v0.42.0 // indirect
 	golang.org/x/sync v0.16.0 // indirect
