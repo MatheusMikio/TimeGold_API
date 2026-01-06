@@ -8,6 +8,7 @@ require (
 	github.com/jfelipearaujo/cpfcnpj v1.2.0
 	github.com/nyaruka/phonenumbers v1.6.7
 	github.com/shopspring/decimal v1.4.0
+	github.com/stripe/stripe-go/v74 v74.30.0
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.31.1
 )
@@ -29,6 +30,7 @@ require (
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
+	github.com/joho/godotenv v1.5.1
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect

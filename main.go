@@ -11,9 +11,13 @@ var (
 
 func main() {
 	logger = config.GetLogger("main")
+
 	err := config.Init()
 	if err != nil {
 		logger.Errorf("Config initialization error: %v", err)
 	}
-	router.Init()
+
+	db := config.GetDb()
+
+	router.Init(db)
 }
