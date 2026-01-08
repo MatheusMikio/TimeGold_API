@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetHandler(service services.IClientService) gin.HandlerFunc {
+func GetByIdHandler(service services.IClientService) gin.HandlerFunc {
 	logger := config.GetLogger("Get (Client)")
 	return func(ctx *gin.Context) {
 		idStr := ctx.Param("id")
