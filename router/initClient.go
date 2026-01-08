@@ -7,12 +7,12 @@ import (
 )
 
 func initClient(rg *gin.RouterGroup, service services.IClientService) {
-	client := rg.Group("/clients")
+	client := rg.Group("/client")
 	{
 		client.GET("", ch.GetAllHandler(service))
-		client.GET("/:id", ch.GetHandler)
+		client.GET(":id", ch.GetHandler(service))
 		client.POST("", ch.CreateHandler)
-		client.PUT("/:id", ch.UpdateHandler)
-		client.DELETE("/:id", ch.DeleteHandler)
+		client.PUT(":id", ch.UpdateHandler)
+		client.DELETE(":id", ch.DeleteHandler)
 	}
 }
