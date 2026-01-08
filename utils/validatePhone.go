@@ -26,8 +26,8 @@ func ValidatePhone[T any](phone string, db *gorm.DB) []*models.ErrorMessage {
 	}
 
 	var existing T
-	if err := db.Where("phone = ?", phone).First(existing).Error; err != nil {
-		errorMessages = append(errorMessages, models.CreateErrorMessage("Phone", "Invalid phone"))
+	if err := db.Where("phone = ?", phone).First(&existing).Error; err == nil {
+		errorMessages = append(errorMessages, models.CreateErrorMessage("Phone", "Phone already registered"))
 	}
 	return errorMessages
 }

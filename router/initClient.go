@@ -11,7 +11,7 @@ func initClient(rg *gin.RouterGroup, service services.IClientService) {
 	{
 		client.GET("", ch.GetAllHandler(service))
 		client.GET(":id", ch.GetByIdHandler(service))
-		client.POST("", ch.CreateHandler)
+		client.POST("", ch.CreateHandler(service))
 		client.PUT(":id", ch.UpdateHandler)
 		client.DELETE(":id", ch.DeleteHandler)
 	}

@@ -21,7 +21,7 @@ func ValidateCpf[T any](cpf string, db *gorm.DB) []*models.ErrorMessage {
 	}
 
 	var existing T
-	if err := db.Where("cpf = ?", cpf).First(existing).Error; err == nil {
+	if err := db.Where("cpf = ?", cpf).First(&existing).Error; err == nil {
 		errorMessages = append(errorMessages, models.CreateErrorMessage("Cpf", "Cpf unavailable."))
 	}
 

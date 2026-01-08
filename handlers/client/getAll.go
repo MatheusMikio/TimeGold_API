@@ -11,7 +11,7 @@ import (
 )
 
 func GetAllHandler(service services.IClientService) gin.HandlerFunc {
-	logger := config.GetLogger("GetAll (Client)")
+	logger := config.GetLogger("GetAll (CLIENT)")
 	return func(ctx *gin.Context) {
 		clients, err := service.GetAll()
 

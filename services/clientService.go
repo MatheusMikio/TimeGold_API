@@ -1,13 +1,18 @@
 package services
 
 import (
+	"github.com/MatheusMikio/config"
 	"github.com/MatheusMikio/dto/client"
+	"github.com/MatheusMikio/models"
+	"github.com/MatheusMikio/models/base"
 	"github.com/MatheusMikio/repository"
+	"github.com/MatheusMikio/schemas"
 )
 
 type IClientService interface {
 	GetAll() (*[]client.ClientResponse, error)
 	GetById(id uint) (*client.ClientResponse, error)
+	Create(clientRequest *client.ClientRequest) []*models.ErrorMessage
 }
 
 type ClientService struct {
@@ -76,4 +81,38 @@ func (service *ClientService) GetById(id uint) (*client.ClientResponse, error) {
 		AppointmentsSummary: appointmentsSummary,
 	}
 	return &clientReponse, nil
+}
+
+func (service *ClientService) Create(clientRequest *client.ClientRequest) []*models.ErrorMessage {
+	logger := config.GetLogger("Create (CLIENT)")
+	if errorMessage := clientRequest.Validate(service.Repository.GetDb()); len(errorMessage) > 0 {
+		logger.Errorf("Validation failed: %d errors found", len(errorMessage))
+		return errorMessage
+	}
+
+	newClient := &schemas.Client{
+		BaseUser: base.BaseUser{
+			FirstName: clientRequest.FirstName,
+			LastName:  clientRequest.LastName,
+			Cpf:       clientRequest.Cpf,
+			Email:     clientRequest.Email,
+			Phone:     clientRequest.Phone,
+		},
+		CardData: &models.CardData{
+			StripeCardId: clientRequest.StripeCardId,
+			CardBrand:    clientRequest.CardBrand,
+			CardLast4:    clientRequest.CardLast4,
+			CardExpMonth: clientRequest.CardExpMonth,
+			CardExpYear:  clientRequest.CardExpYear,
+		},
+	}
+
+	if err := service.Repository.Create(newClient); err != nil {
+		logger.Errorf("Failed to create client in database: %v", err)
+		return []*models.ErrorMessage{
+			models.CreateErrorMessage("Database", "Failed to create client: "+err.Error()),
+		}
+	}
+
+	return nil
 }

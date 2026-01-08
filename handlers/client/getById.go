@@ -12,7 +12,7 @@ import (
 )
 
 func GetByIdHandler(service services.IClientService) gin.HandlerFunc {
-	logger := config.GetLogger("Get (Client)")
+	logger := config.GetLogger("Get (CLIENT)")
 	return func(ctx *gin.Context) {
 		idStr := ctx.Param("id")
 		id, err := strconv.ParseUint(idStr, 10, 64)

@@ -7,6 +7,7 @@ import (
 
 type Client struct {
 	base.BaseUser
-	models.CardData `json:"cardData"`
-	Appointments    []Scheduling `json:"appointments"`
+	CardDataID   uint             `json:"cardDataId" gorm:"index"`
+	CardData     *models.CardData `json:"cardData" gorm:"foreignKey:CardDataID"`
+	Appointments []Scheduling     `json:"appointments"`
 }
