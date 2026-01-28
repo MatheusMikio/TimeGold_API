@@ -6,7 +6,7 @@ import (
 )
 
 type IClientRepository interface {
-	GetAll() (*[]schemas.Client, error)
+	GetAll(page uint64, size uint64) (*[]schemas.Client, error)
 	GetById(id uint) (*schemas.Client, error)
 	GetByEmail(email string) (*schemas.Client, error)
 	GetByGoogleId(googleId string) (*schemas.Client, error)
@@ -30,9 +30,10 @@ func (r *ClientRepository) GetDb() *gorm.DB {
 	return r.Db
 }
 
-func (r *ClientRepository) GetAll() (*[]schemas.Client, error) {
+func (r *ClientRepository) GetAll(page uint64, size uint64) (*[]schemas.Client, error) {
 	clients := []schemas.Client{}
-	if err := r.Db.Preload("Appointments").Find(&clients).Error; err != nil {
+	offSet := int((page - 1) * size)
+	if err := r.Db.Preload("Appointments").Limit(int(size)).Offset(offSet).Find(&clients).Error; err != nil {
 		return nil, err
 	}
 	return &clients, nil

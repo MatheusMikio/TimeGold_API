@@ -14,7 +14,7 @@ import (
 )
 
 type IClientService interface {
-	GetAll() (*[]client.ClientResponse, error)
+	GetAll(page uint64, size uint64) (*[]client.ClientResponse, error)
 	GetById(id uint) (*client.ClientResponse, error)
 	Create(clientRequest *client.ClientRequest) []*models.ErrorMessage
 	Update(clientRequest *client.UpdateClientRequest) []*models.ErrorMessage
@@ -31,8 +31,8 @@ func NewClientService(repo repository.IClientRepository) IClientService {
 	}
 }
 
-func (service *ClientService) GetAll() (*[]client.ClientResponse, error) {
-	clients, err := service.Repository.GetAll()
+func (service *ClientService) GetAll(page uint64, size uint64) (*[]client.ClientResponse, error) {
+	clients, err := service.Repository.GetAll(page, size)
 
 	if err != nil {
 		return nil, err
