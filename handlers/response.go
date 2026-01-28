@@ -14,10 +14,20 @@ func SendError(ctx *gin.Context, code int, msg interface{}) {
 	})
 }
 
-func SendSuccess(ctx *gin.Context, code int, op string, data ...interface{}) {
+func SendSuccess(ctx *gin.Context, code int, op string, data interface{}) {
 	ctx.Header("Content-type", "application/json")
 	ctx.JSON(code, gin.H{
 		"message": fmt.Sprintf("Operation from handler %s successfull", op),
 		"data":    data,
+	})
+}
+
+func SendAuthSuccess(ctx *gin.Context, code int, accessToken string, expiresIn int64, user interface{}) {
+	ctx.Header("Content-type", "application/json")
+	ctx.JSON(code, gin.H{
+		"access_token": accessToken,
+		"token_type":   "Bearer",
+		"expires_in":   expiresIn,
+		"user":         user,
 	})
 }

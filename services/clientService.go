@@ -1,18 +1,24 @@
 package services
 
 import (
+	"errors"
+	"fmt"
+
 	"github.com/MatheusMikio/config"
 	"github.com/MatheusMikio/dto/client"
 	"github.com/MatheusMikio/models"
 	"github.com/MatheusMikio/models/base"
 	"github.com/MatheusMikio/repository"
 	"github.com/MatheusMikio/schemas"
+	"gorm.io/gorm"
 )
 
 type IClientService interface {
 	GetAll() (*[]client.ClientResponse, error)
 	GetById(id uint) (*client.ClientResponse, error)
 	Create(clientRequest *client.ClientRequest) []*models.ErrorMessage
+	Update(clientRequest *client.UpdateClientRequest) []*models.ErrorMessage
+	Delete(id uint) *models.ErrorMessage
 }
 
 type ClientService struct {
@@ -84,10 +90,17 @@ func (service *ClientService) GetById(id uint) (*client.ClientResponse, error) {
 }
 
 func (service *ClientService) Create(clientRequest *client.ClientRequest) []*models.ErrorMessage {
-	logger := config.GetLogger("Create (CLIENT)")
+	logger := config.GetLogger("Create (CLIENT) service")
+
 	if errorMessage := clientRequest.Validate(service.Repository.GetDb()); len(errorMessage) > 0 {
 		logger.Errorf("Validation failed: %d errors found", len(errorMessage))
 		return errorMessage
+	}
+
+	cardData, err := clientRequest.ValidateAndFetchCard(config.GetStripeKey())
+	if len(err) > 0 {
+		logger.Errorf("Card validation failed: %d erros found", len(err))
+		return err
 	}
 
 	newClient := &schemas.Client{
@@ -98,19 +111,82 @@ func (service *ClientService) Create(clientRequest *client.ClientRequest) []*mod
 			Email:     clientRequest.Email,
 			Phone:     clientRequest.Phone,
 		},
-		CardData: &models.CardData{
-			StripeCardId: clientRequest.StripeCardId,
-			CardBrand:    clientRequest.CardBrand,
-			CardLast4:    clientRequest.CardLast4,
-			CardExpMonth: clientRequest.CardExpMonth,
-			CardExpYear:  clientRequest.CardExpYear,
-		},
+		CardData: cardData,
 	}
 
 	if err := service.Repository.Create(newClient); err != nil {
-		logger.Errorf("Failed to create client in database: %v", err)
+		logger.Errorf("Failed to create client in database: %v", err.Error())
 		return []*models.ErrorMessage{
 			models.CreateErrorMessage("Database", "Failed to create client: "+err.Error()),
+		}
+	}
+
+	return nil
+}
+
+func (service *ClientService) Update(clientRequest *client.UpdateClientRequest) []*models.ErrorMessage {
+	logger := config.GetLogger("Update (CLIENT) service")
+
+	if errorMessage := clientRequest.Validate(service.Repository.GetDb()); len(errorMessage) > 0 {
+		logger.Errorf("Validation failed: %d errors found", len(errorMessage))
+		return errorMessage
+	}
+
+	clientDb, err := service.Repository.GetById(clientRequest.Id)
+	if err != nil {
+		logger.Errorf("Failed to load client from database: %v", err)
+		return []*models.ErrorMessage{
+			models.CreateErrorMessage("Client", "Error getting client: "+err.Error()),
+		}
+	}
+
+	if clientRequest.HasCardChanged(clientDb) {
+		cardData, cardErrors := clientRequest.ValidateAndFetchCard(config.GetStripeKey())
+		if len(cardErrors) > 0 {
+			logger.Errorf("Card validation failed: %d errors found", len(cardErrors))
+			return cardErrors
+		}
+		clientDb.CardData = cardData
+	}
+
+	clientRequest.MergeInto(clientDb)
+
+	if err := service.Repository.Update(clientDb); err != nil {
+		logger.Errorf("Failed to update client in database: %v", err)
+		return []*models.ErrorMessage{
+			models.CreateErrorMessage("Database", "Failed to update client: "+err.Error()),
+		}
+	}
+
+	return nil
+}
+
+func (service *ClientService) Delete(id uint) *models.ErrorMessage {
+	logger := config.GetLogger("Delete (CLIENT) service")
+
+	client, err := service.Repository.GetById(id)
+	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+		return &models.ErrorMessage{
+			Property: "Client",
+			Message:  "Client not found",
+		}
+	}
+
+	if err != nil {
+		errorMessage := fmt.Sprintf("Unexpected error: %v", err.Error())
+		logger.Error(errorMessage)
+		return &models.ErrorMessage{
+			Property: "Database",
+			Message:  errorMessage,
+		}
+	}
+
+	if err := service.Repository.Delete(client); err != nil {
+		errorMessage := fmt.Sprintf("Failed to delete client: %v", err.Error())
+		logger.Error(errorMessage)
+		return &models.ErrorMessage{
+			Property: "Database",
+			Message:  errorMessage,
 		}
 	}
 

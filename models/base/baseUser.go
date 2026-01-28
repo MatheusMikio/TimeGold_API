@@ -6,9 +6,11 @@ import (
 
 type BaseUser struct {
 	gorm.Model
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
-	Cpf       string `json:"cpf"`
-	Email     string `json:"email"`
-	Phone     string `json:"phone"`
+	FirstName     string  `json:"firstName"`
+	LastName      string  `json:"lastName"`
+	Cpf           string  `json:"cpf"`
+	Email         string  `json:"email"`
+	Phone         string  `json:"phone"`
+	EmailVerified bool    `json:"emailVerified"`
+	GoogleId      *string `json:"googleId"`
 }

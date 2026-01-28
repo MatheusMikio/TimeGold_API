@@ -1,4 +1,4 @@
 package company
 
-type ComapnyResponse struct {
+type CompanyResponse struct {
 }

@@ -26,7 +26,15 @@ func initPostgreSQL() (*gorm.DB, error) {
 		return nil, err
 	}
 
-	err = db.AutoMigrate(&schemas.Client{}, &schemas.Company{}, &schemas.Professional{}, &schemas.Scheduling{}, &schemas.Service{})
+	err = db.AutoMigrate(
+		&schemas.Client{},
+		&schemas.Company{},
+		&schemas.Professional{},
+		&schemas.Scheduling{},
+		&schemas.Service{},
+		&schemas.MagicLink{},
+	)
+
 	if err != nil {
 		logger.Errorf("autoMigrate error: %v", err)
 		return nil, err

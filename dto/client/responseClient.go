@@ -11,7 +11,7 @@ type ClientResponse struct {
 	Phone               string               `json:"phone"`
 	CreatedAt           time.Time            `json:"createdAt"`
 	UpdatedAt           time.Time            `json:"updatedAt"`
-	DeletedAt           time.Time            `json:"deletedAt,omitempty"`
+	DeletedAt           *time.Time           `json:"deletedAt,omitempty"`
 	AppointmentsSummary []AppointmentSummary `json:"appointmentsSummary,omitempty"`
 }
 

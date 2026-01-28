@@ -12,13 +12,21 @@ func Init(db *gorm.DB) {
 	handlers.Init()
 
 	clientRepo := repository.NewClientRepository(db)
+	professionalRepo := repository.NewProfessionalRepository(db)
+	magicLinkRepo := repository.NewMagicLinkRepository(db)
 
 	clientService := services.NewClientService(clientRepo)
+
+	// Auth
+	authClientService := services.NewAuthClientService(clientRepo, magicLinkRepo)
+	authProfessionalService := services.NewAuthProfessionalService(professionalRepo, magicLinkRepo)
 
 	r := gin.Default()
 
 	initRoutes(r,
 		clientService,
+		authClientService,
+		authProfessionalService,
 	)
 
 	r.Run(":8080")

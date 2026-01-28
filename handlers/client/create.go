@@ -11,7 +11,7 @@ import (
 )
 
 func CreateHandler(service services.IClientService) gin.HandlerFunc {
-	logger := config.GetLogger("Create (CLIENT)")
+	logger := config.GetLogger("Create (CLIENT) handler")
 	return func(ctx *gin.Context) {
 		request := &client.ClientRequest{}
 
@@ -21,9 +21,8 @@ func CreateHandler(service services.IClientService) gin.HandlerFunc {
 			return
 		}
 
-		errorMessage := service.Create(request)
-		if len(errorMessage) > 0 {
-			handlers.SendError(ctx, http.StatusBadRequest, errorMessage)
+		if errorMessage := service.Create(request); len(errorMessage) > 0 {
+			handlers.SendError(ctx, http.StatusUnprocessableEntity, errorMessage)
 			return
 		}
 

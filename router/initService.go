@@ -9,9 +9,9 @@ func initService(rg *gin.RouterGroup) {
 	service := rg.Group("/services")
 	{
 		service.GET("", sh.GetAllHandler)
-		service.GET("/:id", sh.GetHandler)
+		service.GET("/:id", sh.GetByIdHandler)
 		service.POST("", sh.CreateHandler)
-		service.PUT("/:id", sh.UpdateHandler)
+		service.PUT("", sh.UpdateHandler)
 		service.DELETE("/:id", sh.DeleteHandler)
 	}
 }
